@@ -82,6 +82,51 @@ kidstuff.auth.module.provider('auth',function() {
 			});
 		}
 
+		auth.createUser = function(userInfo, success, error) {
+			if(typeof userInfo != 'object') {
+				return;
+			}
+
+			$http({
+				method: 'POST',
+				url: config.endPoint+'/users',
+				data: userInfo,
+				headers: {Authorization: 'Bearer '+localStorageService.get('access_token')}				
+			}).
+			success(function(data, status, headers, config) {
+				if(typeof success == 'function') {
+					success(data);
+				}
+			}).
+			error(function(data, status, headers, config) {
+				if(typeof error == 'function') {
+					error(data);
+				}
+			});
+		}
+
+		auth.removeUser = function(userId, success, error) {
+			if(typeof userId != 'string') {
+				return;
+			}
+
+			$http({
+				method: 'DELETE',
+				url: config.endPoint+'/users/'+userId,
+				headers: {Authorization: 'Bearer '+localStorageService.get('access_token')}
+			}).
+			success(function(data, status, headers, config) {
+				if(typeof success == 'function') {
+					success();
+				}
+			}).
+			error(function(data, status, headers, config) {
+				if(typeof error == 'function') {
+					error(data);
+				}
+			});
+		}
+		
 		auth.updateUserProfile = function(id, profile, success, error) {
 			if(typeof profile != 'object') {
 				return;
@@ -233,16 +278,12 @@ kidstuff.auth.module.provider('auth',function() {
 			});
 		}
 
-		auth.createUser = function(userInfo, success, error) {
-			if(typeof userInfo != 'object') {
-				return;
-			}
-
+		auth.getGroup = function(id, success, error) {
 			$http({
-				method: 'POST',
-				url: config.endPoint+'/users',
-				data: userInfo,
-				headers: {Authorization: 'Bearer '+localStorageService.get('access_token')}				
+				method: 'GET',
+				url: config.endPoint+'/groups/'+id,
+				params: params,
+				headers: {Authorization: 'Bearer '+localStorageService.get('access_token')}
 			}).
 			success(function(data, status, headers, config) {
 				if(typeof success == 'function') {
@@ -256,19 +297,16 @@ kidstuff.auth.module.provider('auth',function() {
 			});
 		}
 
-		auth.removeUser = function(userId, success, error) {
-			if(typeof userId != 'string') {
-				return;
-			}
-
+		auth.updateGroup = function(group, success, error) {
 			$http({
-				method: 'DELETE',
-				url: config.endPoint+'/users/'+userId,
+				method: 'PATCH',
+				url: config.endPoint+'/groups/'+group.Id,
+				data: group,
 				headers: {Authorization: 'Bearer '+localStorageService.get('access_token')}
 			}).
 			success(function(data, status, headers, config) {
 				if(typeof success == 'function') {
-					success();
+					success(data);
 				}
 			}).
 			error(function(data, status, headers, config) {
@@ -277,7 +315,25 @@ kidstuff.auth.module.provider('auth',function() {
 				}
 			});
 		}
-		
+
+		auth.removeGroup = function(id, success, error) {
+			$http({
+				method: 'DELETE',
+				url: config.endPoint+'/groups/'+id,
+				headers: {Authorization: 'Bearer '+localStorageService.get('access_token')}
+			}).
+			success(function(data, status, headers, config) {
+				if(typeof success == 'function') {
+					success(data);
+				}
+			}).
+			error(function(data, status, headers, config) {
+				if(typeof error == 'function') {
+					error(data);
+				}
+			});
+		}
+
 		return auth;
     }];
 
