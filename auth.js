@@ -282,7 +282,6 @@ kidstuff.auth.module.provider('auth',function() {
 			$http({
 				method: 'GET',
 				url: config.endPoint+'/groups/'+id,
-				params: params,
 				headers: {Authorization: 'Bearer '+localStorageService.get('access_token')}
 			}).
 			success(function(data, status, headers, config) {
