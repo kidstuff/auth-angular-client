@@ -333,6 +333,65 @@ kidstuff.auth.module.provider('auth',function() {
 			});
 		}
 
+
+		auth.updateSettings = function(settings, success, error) {
+			if(typeof settings != "object") {
+				return
+			}
+
+			$http({
+				method: 'PATCH',
+				url: config.endPoint+'/settings',
+				headers: {Authorization: 'Bearer '+localStorageService.get('access_token')},
+				data: settings
+			}).
+			success(function(data, status, headers, config) {
+				if(typeof success == 'function') {
+					success();
+				}
+			}).
+			error(function(data, status, headers, config) {
+				if(typeof error == 'function') {
+					error(data);
+				}
+			});	
+		}
+
+		auth.getSettings = function(keys, success, error) {
+			$http({
+				method: 'GET',
+				url: config.endPoint+'/settings?keys='+keys.toString(),
+				headers: {Authorization: 'Bearer '+localStorageService.get('access_token')}
+			}).
+			success(function(data, status, headers, config) {
+				if(typeof success == 'function') {
+					success(data);
+				}
+			}).
+			error(function(data, status, headers, config) {
+				if(typeof error == 'function') {
+					error(data);
+				}
+			});			
+		}
+
+		auth.removeSettings = function(keys, success, error) {
+			$http({
+				method: 'DELETE',
+				url: config.endPoint+'/settings?keys='+keys.toString(),
+				headers: {Authorization: 'Bearer '+localStorageService.get('access_token')}
+			}).
+			success(function(data, status, headers, config) {
+				if(typeof success == 'function') {
+					success();
+				}
+			}).
+			error(function(data, status, headers, config) {
+				if(typeof error == 'function') {
+					error(data);
+				}
+			});			
+		}		
 		return auth;
     }];
 
