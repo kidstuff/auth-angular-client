@@ -36,7 +36,7 @@ kidstuff.auth.module.provider('auth',function() {
 
 		auth.login = function(email, password, success, error) {
 			$http({
-				method: 'GET',
+				method: 'POST',
 				url: config.endPoint+'/tokens',
 				params:{
 					email: email,
