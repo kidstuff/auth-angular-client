@@ -35,6 +35,10 @@ kidstuff.auth.module.provider('auth',function() {
 		}
 
 		auth.login = function(email, password, success, error) {
+			if(typeof email != 'string' || typeof password != 'string') {
+				return error({error:'email/password must be string'})
+			}
+
 			$http({
 				method: 'POST',
 				url: config.endPoint+'/tokens',
@@ -63,8 +67,9 @@ kidstuff.auth.module.provider('auth',function() {
 
 		auth.getUser = function(id, success, error) {
 			if(typeof id != 'string') {
-				return;
+				return error({error:'id must be string'});
 			}
+
 			$http({
 				method: 'GET',
 				url: config.endPoint+'/users/'+id,
@@ -84,7 +89,7 @@ kidstuff.auth.module.provider('auth',function() {
 
 		auth.createUser = function(userInfo, success, error) {
 			if(typeof userInfo != 'object') {
-				return;
+				return error({error:'userInfo must be object'});
 			}
 
 			$http({
@@ -107,7 +112,7 @@ kidstuff.auth.module.provider('auth',function() {
 
 		auth.removeUser = function(userId, success, error) {
 			if(typeof userId != 'string') {
-				return;
+				return error({error:'userId must be string'});
 			}
 
 			$http({
@@ -128,9 +133,14 @@ kidstuff.auth.module.provider('auth',function() {
 		}
 		
 		auth.updateUserProfile = function(id, profile, success, error) {
-			if(typeof profile != 'object') {
-				return;
+			if(typeof id != 'string') {
+				return error({error:'id must be string'});
 			}
+
+			if(typeof profile != 'object') {
+				return error({error:'profile must be object'})
+			}
+
 			$http({
 				method: 'PATCH',
 				url: config.endPoint+'/users/'+id+'/profile',
@@ -150,8 +160,12 @@ kidstuff.auth.module.provider('auth',function() {
 		}
 
 		auth.updateUserApproval = function(id, approve, success, error) {
+			if(typeof id != 'string') {
+				return error({error:'id must be string'});
+			}
+
 			if(typeof approve != 'boolean') {
-				return;
+				return error({error:'approve must be boolean'});
 			}
 
 			$http({
@@ -175,6 +189,10 @@ kidstuff.auth.module.provider('auth',function() {
 		}
 
 		auth.listUser = function(params, success, error) {
+			if(typeof params != 'object') {
+				return error({error:'params must be object'})
+			}
+
 			$http({
 				method: 'GET',
 				url: config.endPoint+'/users',
@@ -195,7 +213,7 @@ kidstuff.auth.module.provider('auth',function() {
 
 		auth.removeUserGroup = function(userId, groupId, success, error) {
 			if(typeof userId != 'string' || typeof groupId != 'string') {
-				return;
+				return error({error:'userId/groupId must be string'});
 			}
 
 			$http({
@@ -217,7 +235,7 @@ kidstuff.auth.module.provider('auth',function() {
 
 		auth.addUserGroup = function(userId, groupId, success, error) {
 			if(typeof userId != 'string' || typeof groupId != 'string') {
-				return;
+				return error({error:'userId/groupId must be string'});
 			}
 
 			$http({
@@ -241,6 +259,10 @@ kidstuff.auth.module.provider('auth',function() {
 		}
 
 		auth.listGroup = function(params, success, error) {
+			if(typeof params != 'object') {
+				return error({error:'params must be object'})
+			}
+
 			$http({
 				method: 'GET',
 				url: config.endPoint+'/groups',
@@ -260,6 +282,10 @@ kidstuff.auth.module.provider('auth',function() {
 		}
 
 		auth.createGroup = function(group, success, error) {
+			if(typeof group != 'object') {
+				return error({error:'group must be object'})
+			}
+
 			$http({
 				method: 'POST',
 				url: config.endPoint+'/groups',
@@ -279,6 +305,10 @@ kidstuff.auth.module.provider('auth',function() {
 		}
 
 		auth.getGroup = function(id, success, error) {
+			if(typeof id != 'string') {
+				return error({error:'id must be string'});
+			}
+
 			$http({
 				method: 'GET',
 				url: config.endPoint+'/groups/'+id,
@@ -297,6 +327,10 @@ kidstuff.auth.module.provider('auth',function() {
 		}
 
 		auth.updateGroup = function(group, success, error) {
+			if(typeof group != 'object') {
+				return error({error:'group must be object'})
+			}
+
 			$http({
 				method: 'PATCH',
 				url: config.endPoint+'/groups/'+group.Id,
@@ -316,6 +350,10 @@ kidstuff.auth.module.provider('auth',function() {
 		}
 
 		auth.removeGroup = function(id, success, error) {
+			if(typeof id != 'string') {
+				return error({error:'id must be string'});
+			}
+
 			$http({
 				method: 'DELETE',
 				url: config.endPoint+'/groups/'+id,
@@ -336,7 +374,7 @@ kidstuff.auth.module.provider('auth',function() {
 
 		auth.updateSettings = function(settings, success, error) {
 			if(typeof settings != "object") {
-				return
+				return error({error:'settings must be object'})
 			}
 
 			$http({
@@ -358,6 +396,10 @@ kidstuff.auth.module.provider('auth',function() {
 		}
 
 		auth.getSettings = function(keys, success, error) {
+			if(keys.constructor != Array) {
+				return error({error: 'keys must be array of string'});
+			}
+
 			$http({
 				method: 'GET',
 				url: config.endPoint+'/settings?keys='+keys.toString(),
@@ -376,6 +418,10 @@ kidstuff.auth.module.provider('auth',function() {
 		}
 
 		auth.removeSettings = function(keys, success, error) {
+			if(keys.constructor != Array) {
+				return error({error: 'keys must be array of string'});
+			}
+			
 			$http({
 				method: 'DELETE',
 				url: config.endPoint+'/settings?keys='+keys.toString(),
