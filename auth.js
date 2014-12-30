@@ -49,14 +49,18 @@ kidstuff.auth.module.provider('auth',function() {
 				}
 			}).
 			success(function(data, status, headers, config) {
-				localStorageService.set('access_token', data.AccessToken);
-				localStorageService.set('expired_on', data.ExpiredOn);
-				localStorageService.set('user', data.User);
+				auth.setLoged(data.AccessToken, data.ExpiredOn, data.User)
 				success(data, status, headers, config);
 			}).
 			error(function(data, status, headers, config) {
 				error(data, status, headers, config);
 			});
+		}
+
+		auth.setLoged = function(token, expired, user) {
+			localStorageService.set('access_token', token);
+			localStorageService.set('expired_on', expired);
+			localStorageService.set('user', user);
 		}
 
 		auth.logout = function() {

@@ -48,6 +48,9 @@ app.controller('LoginController', ['$scope', 'auth', function($scope, auth) {
 }]);
 ``` 
 
+### setLoged
+setLoged(token _string_, expired _RFC 3999 string_, user_object_)
+
 ### logout
 logout()
 
